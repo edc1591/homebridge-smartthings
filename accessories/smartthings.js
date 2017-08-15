@@ -217,13 +217,7 @@ function SmartThingsAccessory(platform, device) {
 // Thinking of implementing this as a Door service.
 //    }
 
-    if (device.capabilities["Button"] !== undefined) {
-        this.deviceGroup = " button";
-        thisCharacteristic = this.getaddService(Service.StatelessProgrammableSwitch).getCharacteristic(Characteristic.ProgrammableSwitchEvent);
-        thisCharacteristic.on('set', function(callback) { callback(null, true); });
-        that.platform.addAttributeUsage("button", this.deviceid, thisCharacteristic);
-    }
-    if (device.capabilities["Switch"] !== undefined && this.deviceGroup == "unknown") {
+    if ((device.capabilities["Switch"] !== undefined || device.capabilities["Button"] !== undefined) && this.deviceGroup == "unknown") {
         this.deviceGroup = "switch";
         thisCharacteristic = this.getaddService(Service.Switch).getCharacteristic(Characteristic.On)
         thisCharacteristic.on('get', function(callback) { callback(null, that.device.attributes.switch == "on"); })
